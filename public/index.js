@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
 io.on("connection",(socket)=>{
   
   socket.on("name",(name)=>{
-    if(name!="" && name!=null){
+    if(name!="" || name!=null){
     users[socket.id]=name;
     socket.emit("bye", users)
     }
