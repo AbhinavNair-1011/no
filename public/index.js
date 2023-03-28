@@ -21,14 +21,15 @@ app.get('/', (req, res) => {
   //     console.log('message: ' + msg);
   //   });
   // });
+  let users={};
 
 
+ 
 
 io.on("connection",(socket)=>{
   
-  let users={};
   socket.on("name",(name)=>{
-    if(name!=""){
+    if(name!="" && name!=null){
     users[socket.id]=name;
     socket.emit("bye", users)
     }
