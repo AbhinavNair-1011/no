@@ -159,7 +159,7 @@
 
         let name = prompt("What is ur name?");
         socket.emit("name", name);
-        p.innerText = `welcome ${name}`;
+        if(p!=null || p!="") p.innerText = `welcome ${name}`;
 
 
 
