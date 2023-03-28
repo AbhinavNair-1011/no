@@ -22,20 +22,43 @@ app.get('/', (req, res) => {
   //   });
   // });
 
-io.on("connection",(socket)=>{
-  console.log("a user connected");
 
+
+io.on("connection",(socket)=>{
+  
+  let users={};
+  socket.on("name",(name)=>{
+    if(name!=""){
+    users[socket.id]=name;
+    socket.emit("bye", users)
+    }
+    console.log(`${name} is connected`);
+    
+    
+  
+  })
   
 
 socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
+
+    socket.broadcast.emit('chat message', msg);
+
   });
+
+ 
+
+
 
 
   socket.on('disconnect', () => {
-    console.log('user disconnected');
+    console.log(users[socket.id]+' disconnected');
   });
-})
+
+
+});
+
+
+
 
 server.listen(3000,()=>{
     console.log("listening");

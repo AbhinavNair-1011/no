@@ -1,35 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Application</title>
-<!-- <script src="/public/index.js"></script> -->
-<style>
-    *{
-    padding:0;
-    margin:0;
-    }
-    
-    nav{
-        background-color: black;
-        height:70px;
-        color:white;
-    }
-    
-    .messagesContainer{
-        background-color: red;
-        height:80vh;
-        
-    }
-   
-    li{
-        font-size: 19px;
-        padding:8px;
-        color:black;
-    
-    }
+    <!-- <script src="/public/index.js"></script> -->
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: black;
+        }
+
+        nav {
+            background-color: rgba(158, 0, 0, 0.603);
+            height: 66px;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            padding: 10px;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .messages {}
+
+        ul {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+
+            flex-shrink: 1;
+        }
+
+        p {
+            background-color: rgba(0, 255, 255, 0.37);
+            width: 100%;
+            height: 30px;
+            text-align: center;
+            font-size: 25px;
+
+
+
+        }
+
+        form {
+            height: 40px;
+            background-color: rgb(179, 230, 223);
+            width: 100%;
+            bottom: 5px;
+            justify-self: end;
+            display: flex;
+            position: absolute;
+            bottom: 0px;
+
+        }
+
+        #input {
+            flex-grow: 1;
+            height: 34px;
+        }
+
+        button {
+            width: 15%;
+            height: 38px;
+        }
+
+        li {
+            font-size: 21px;
+            padding: 5px;
+            color: black;
+            max-width: 600px;
+            width: 75% !important;
+            background-color: #6c6c59;
+            margin: 4px;
+            word-wrap: break-word;
+        }
+
+        .content {
+            background-color: rgba(255, 255, 255, 0.658);
+            display: flex;
+            flex-direction: column;
+            height: 400px;
+            width: 80%;
+            margin: auto;
+            position: relative;
+            padding-bottom: 35px;
+
+
+        }
     </style>
 </head>
 
@@ -41,38 +113,71 @@
     <main>
         <div class="container">
             <div class="messagesContainer">
-                <ul class="messages"></ul>
-                    
-                <form action="get" id="form">
-                    <input id="input"type="text">
-                    <button type="submit">Send</button>
-                </form>
+                <p class="welcome">welcome abhinav</p>
+                <div class="content">
+                    <ul class="messages">
+
+                    </ul>
+
+                    <form action="get" id="form">
+                        <input id="input" type="text">
+                        <button type="submit">Send</button>
+
+                    </form>
+                </div>
             </div>
         </div>
     </main>
     <script src="/socket.io/socket.io.js"></script>
-<script>
-  var socket = io();
-  var form = document.getElementById('form');
-  var input = document.getElementById('input');
-  let messages=document.querySelector(".messages")
+    <script>
+        var socket = io();
 
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    if (input.value) {
-      socket.emit('chat message', input.value);
-      input.value = '';
-    }
-});
+        let p = document.querySelector(".welcome")
+        var form = document.getElementById('form');
+        var input = document.getElementById('input');
+        let messages = document.querySelector(".messages");
 
-socket.on('chat message', function(msg) {
-    var item = document.createElement('li');
-    item.setAttribute("class","li");
-    item.appendChild(document.createTextNode(msg))
-    messages.appendChild(item);
-  });
-</script>
 
-  
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            if (input.value) {
+                socket.emit('chat message', input.value);
+
+
+                var item2 = document.createElement('li');
+                item2.style.alignSelf = "end";
+                item2.style.listStyleType="none";
+
+
+                item2.appendChild(document.createTextNode(input.value))
+                messages.appendChild(item2);
+                input.value = '';
+            }
+        });
+
+
+
+        let name = prompt("What is ur name?");
+        socket.emit("name", name);
+        p.innerText = `welcome ${name}`;
+
+
+
+
+        socket.on('chat message', function (msg) {
+
+
+
+            var item = document.createElement('li');
+
+            item.appendChild(document.createTextNode(msg));
+            messages.appendChild(item);
+        });
+
+
+    </script>
+
+
 </body>
+
 </html>
